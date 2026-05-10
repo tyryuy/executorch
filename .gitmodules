@@ -71,3 +71,9 @@
 	path = backends/mlx/third-party/mlx
 	url = https://github.com/ml-explore/mlx.git
 	shallow = true
+[submodule "third-party/CMSIS-NN"]
+	path = third-party/CMSIS-NN
+	url = https://github.com/ARM-software/CMSIS-NN.git
+[submodule "third-party/CMSIS_5"]
+	path = third-party/CMSIS_5
+	url = https://github.com/ARM-software/CMSIS_5.git

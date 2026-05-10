@@ -7,7 +7,11 @@
 set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
 add_subdirectory(json)
 # hexagon toolchain does not support mkdir, which is used in gflags.
-if(NOT ${CMAKE_SYSTEM_PROCESSOR} MATCHES Hexagon)
+# Also skip gflags when building the baremetal runtime without host-side
+# runners/tools that depend on it.
+if((NOT ${CMAKE_SYSTEM_PROCESSOR} MATCHES Hexagon)
+   AND (EXECUTORCH_BUILD_EXECUTOR_RUNNER OR EXECUTORCH_BUILD_EXTENSION_TRAINING)
+)
   add_subdirectory(gflags)
 endif()
 
@@ -100,6 +104,7 @@ ExternalProject_Add(
     -DFLATCC_TEST=OFF
     -DFLATCC_REFLECTION=OFF
     -DFLATCC_DEBUG_CLANG_SANITIZE=OFF
+    -DFLATCC_ALLOW_WERROR=OFF
     -DFLATCC_INSTALL=ON
     -DCMAKE_POLICY_VERSION_MINIMUM=3.5
     -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
@@ -140,6 +145,10 @@ set(FLATCC_REFLECTION
 set(FLATCC_DEBUG_CLANG_SANITIZE
     OFF
     CACHE BOOL ""
+)
+set(FLATCC_ALLOW_WERROR
+    OFF
+    CACHE BOOL "" FORCE
 )
 set(FLATCC_INSTALL
     OFF
