@@ -50,6 +50,11 @@ else()
   FetchContent_MakeAvailable(cmsis_nn)
 endif()
 
+# The local/source checkout exposes source-tree include paths publicly, which
+# breaks export/generate checks in the parent ExecuTorch build. Restrict them to
+# build-time usage only like other bundled third-party targets.
+executorch_move_interface_include_directories_to_build_time_only(cmsis-nn)
+
 # Cortex-M ops kernel sources
 set(_cortex_m_kernels__srcs
     ${CMAKE_CURRENT_SOURCE_DIR}/ops/op_dequantize_per_tensor.cpp
